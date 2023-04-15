@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "AI assistant",
+  "version": "1.0",
+  "description": "Add the reading time to Chrome Extension documentation articles",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://meet.parque.io/room/*"
+      ],
+      "css": ["scripts/content.css"],
+      "js": ["scripts/content.js"]
+    }
+  ]
+}

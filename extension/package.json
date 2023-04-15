@@ -1,0 +1,21 @@
+{
+  "name": "extension",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "parcel build src/content.tsx -d dist/scripts --no-source-maps",
+    "postbuild": "node postbuild.js"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "2.8.3",
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^5.0.4"
+  }
+}
