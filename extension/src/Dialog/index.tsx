@@ -12,12 +12,36 @@ const orders = [
   "アクションアイテムをリスト化してください"
 ]
 
+const chunkPeriods = [{
+  label: "3分",
+  period: 1000 * 60 * 3,
+}, {
+  label: "5分",
+  period: 1000 * 60 * 5,
+}, {
+  label: "10分",
+  period: 1000 * 60 * 10,
+}, {
+  label: "20分",
+  period: 1000 * 60 * 20,
+}, {
+  label: "30分",
+  period: 1000 * 60 * 30,
+}, {
+  label: "40分",
+  period: 1000 * 60 * 40,
+}, {
+  label: "50分",
+  period: 1000 * 60 * 50,
+}]
+
 export function Dialog() {
 
   const [result, setResult] = useState("")
   const messagesRef = useRef<Message[]>([])
   const [loading, setLoading] = useState(false)
   const [_, setLastTimestamp] = useState(0)
+  const [chunkPeriod, setChunkPeriod] = useState(1000 * 60 * 5)
 
   useEffect(() => {
     setInterval(() => {
@@ -67,7 +91,7 @@ export function Dialog() {
           },
           body: JSON.stringify({
             order,
-            entries: messagesRef.current.filter(m => m.timestamp > new Date().getTime() - 1000 * 60)
+            entries: messagesRef.current.filter(m => m.timestamp > new Date().getTime() - chunkPeriod)
           }),
         })
         const json = await res.json()
@@ -86,10 +110,20 @@ export function Dialog() {
     }
     callGpt(order)
   }
+  const periodSelectionChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setChunkPeriod(parseInt(e.currentTarget.value, 10))
+  }
   const messages = messagesRef.current
   return (
     <div className={styles.frame}>
       <div>total messages: {messages.length}</div>
+      <div>
+        <select value={chunkPeriod} onChange={periodSelectionChange}>
+          {chunkPeriods.map(({ label, period }) => (
+            <option value={period}>{label}</option>
+          ))}
+        </select>
+      </div>
       <div>
         <textarea readOnly value={result} disabled={loading}></textarea>
       </div>
