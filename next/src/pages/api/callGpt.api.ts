@@ -77,6 +77,7 @@ export default async function handler(
           throw new Error('entry.text is not string')
         }
       })
+      return entries.map(ent => `${ent.text}`).join("\n\n")
       return entries.map(ent => `時間: ${new Date(ent.timestamp).toISOString()}, 話し手: ${ent.speaker}, 内容: ${ent.text}`).join("\n")
     } catch (e) {
       if (e instanceof Error) {
@@ -98,11 +99,22 @@ export default async function handler(
       content: `
         あなたはミーティングの進行を手助けする AI アシスタントです。
         user からの入力は、複数のミーティングの参加者が発言した内容を、時間順に並べたものです。
-        以下にある発言を元に、指示内容にしたがって答えを返してください。
 
-        ### 指示内容 ###
-        ${order}
-      `
+        指示内容:
+        * 内容を箇条書きで時系列でリストとして書き出してください。
+        * 話していることをそのまま描きだすのではなく、話されている内容をまとまった単位で要約して項目としてください。
+        * 相槌は省いてください。相槌とは、OK、了解などです。
+        * 書き出し結果に誤りがある可能性があるので、前後の文脈をみて意味の通じるものだけを抜き出してください。
+        * ミーティングノートに使えるような形式で書き出してください。
+        * 一つ一つの発言ではなく、まとまった単位で要約してください。
+
+        ルール:
+        * 発言者が発言した内容をそのまま書き出さないこと
+        * 与えられた日付をそのまま表示しない
+        
+        フォーマット:
+        * マークダウン形式で書き出してください
+      `,
     },
     {
     role: "user",

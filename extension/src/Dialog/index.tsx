@@ -42,6 +42,13 @@ export function Dialog() {
   const [loading, setLoading] = useState(false)
   const [_, setLastTimestamp] = useState(0)
   const [chunkPeriod, setChunkPeriod] = useState(1000 * 60 * 5)
+  const lastFetchPerfTimeRef = useRef(0)
+
+  useEffect(() => {
+    setInterval(() => {
+      callGpt("hoge")
+    }, 30 * 1000)
+  }, [])
 
   useEffect(() => {
     setInterval(() => {
